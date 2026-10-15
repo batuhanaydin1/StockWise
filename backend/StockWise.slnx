@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="StockWise.API/StockWise.API.csproj" />
+  <Project Path="StockWise.Business/StockWise.Business.csproj" />
+  <Project Path="StockWise.Core/StockWise.Core.csproj" />
+  <Project Path="StockWise.Data/StockWise.Data.csproj" />
+</Solution>
