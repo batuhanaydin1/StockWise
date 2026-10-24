@@ -1,91 +1,138 @@
-# StockWise - Profesyonel Stok & Son Kullanma Tarihi Takip Sistemi
+# StockWise — Stok ve Son Kullanma Tarihi Takip Sistemi
 
-StockWise; marketler, depolar ve işletmeler için ürün envanterini, kritik stok miktarlarını ve son kullanma tarihlerini (SKT) anlık olarak takip eden, modern ve kurumsal mimaride geliştirilmiş tam kapsamlı bir **Full Stack Web Uygulamasıdır**.
+StockWise; ürün envanterini, stok seviyelerini ve son kullanma tarihlerini takip etmek için geliştirilmiş bir Full Stack web uygulamasıdır. Kullanıcıların ürünlerini ve kategorilerini yönetmesine, kritik stok seviyelerini izlemesine ve son kullanma tarihi yaklaşan ürünleri kolayca belirlemesine yardımcı olur.
 
----
+## Özellikler
 
-## 🚀 Öne Çıkan Özellikler
+- **Kontrol Paneli:** Toplam ürün, kritik stok, son kullanma tarihi yaklaşan ve tarihi geçmiş ürünlere ilişkin özet bilgiler.
+- **Son Kullanma Tarihi Takibi:** Tarihi geçmiş, tarihi yaklaşan ve güvenli durumdaki ürünleri görsel durum göstergeleriyle takip etme.
+- **Kritik Stok Uyarıları:** Minimum stok seviyesinin altına düşen ürünleri belirleme.
+- **Ürün Yönetimi (CRUD):** Ürün ekleme, listeleme, düzenleme ve silme.
+- **Kategori Yönetimi:** Ürünleri kategorilere göre düzenleme ve filtreleme.
+- **Arama ve Sıralama:** Ürün adına göre arama, kategoriye göre filtreleme ve farklı ölçütlerle sıralama.
+- **Veri Doğrulama:** Hatalı veya geçersiz verilerin kaydedilmesini önlemeye yönelik kontroller.
+- **REST API:** Frontend ile backend arasında HTTP üzerinden veri iletişimi.
+- **Swagger / OpenAPI:** API uç noktalarını görüntüleme ve test etme.
+- **Docker Desteği:** Backend uygulamasını Docker konteynerinde çalıştırma.
 
-- **Gelişmiş Kontrol Paneli (Dashboard):**
-  - Toplam ürün, kritik stoklu ürün, tarihi yaklaşan (7 gün) ve tarihi geçmiş ürün sayılarını gösteren canlı sayaç kartları.
-  - Kartlara tıklayarak tek dokunuşla ilgili ürün grubunu filtreleyebilme.
-- **Akıllı Son Kullanma Tarihi (SKT) Takibi:**
-  - Tarihi geçen ürünler için anında kırmızı tehlike rozeti ve geçen gün sayısı bilgisi.
-  - Tarihine 7 günden az kalan ürünler için sarı uyarı rozeti ve kalan gün sayacı.
-  - Tarihi güvenli ürünler için yeşil onay rozeti.
-- **Kritik Stok Uyarısı:**
-  - Mevcut stok miktarı, ürün için tanımlanan minimum seviyenin altına düştüğünde sistem otomatik olarak uyarı verir.
-- **Tam Kapsamlı CRUD İşlemleri:**
-  - Kategori seçimi, miktar, minimum stok seviyesi ve son kullanma tarihi belirterek ürün ekleme, düzenleme ve onaylı silme.
-- **Arama, Kategori Filtreleme ve Sıralama:**
-  - Ürün adına göre anlık arama (search).
-  - Kategoriye göre filtreleme.
-  - İsim (A-Z / Z-A), Son Kullanma Tarihi ve Stok Miktarına göre sıralama (Sort by).
-- **Kurumsal Hata Yönetimi & Doğrulama (Validation):**
-  - Hem Frontend hem Backend üzerinde çift katmanlı veri doğrulaması (negatif stok engeli, zorunlu alanlar vb.).
-  - Başarılı ve hatalı işlemler için kullanıcı dostu bildirimler (Toast).
-
----
-
-## 🛠 Kullanılan Teknolojiler ve Mimari
-
-### Backend
-- **Platform:** C# / .NET 10 (ASP.NET Core Web API)
-- **Mimari:** Çok Katmanlı Mimari (N-Tier Architecture: API, Business, Data, Core)
-- **Veritabanı & ORM:** Microsoft SQL Server & Entity Framework Core (Code-First)
-- **Dokümantasyon:** Swagger / OpenAPI UI
-- **Tasarım Kalıpları:** DTO (Data Transfer Object) Deseni, Repository/Service Pattern, Dependency Injection (DI)
+## Kullanılan Teknolojiler
 
 ### Frontend
-- **Kütüphane:** React (Vite)
-- **Stil & Tasarım:** Tailwind CSS
-- **İkon Seti:** Lucide React
-- **HTTP İstemcisi:** Axios (Merkezi API Servisi ve Interceptor)
+- React
+- Vite
+- Tailwind CSS
+- Axios
+- Lucide React
 
----
+### Backend
+- C#
+- .NET 10
+- ASP.NET Core Web API
+- Entity Framework Core
+- Microsoft SQL Server
+- Swagger / OpenAPI
 
-## 📂 Proje Dizin Yapısı
+### Mimari ve Araçlar
+- Çok katmanlı mimari (API, Business, Data, Core)
+- Servis katmanı ve Dependency Injection
+- DTO (Data Transfer Object)
+- Git ve GitHub
+- Docker
+
+## Proje Yapısı
 
 ```text
 StockWise/
-│
 ├── backend/
-│   ├── StockWise.sln
-│   ├── StockWise.Core/         # Entity'ler, DTO'lar, Arayüzler (Interfaces)
-│   ├── StockWise.Data/         # DbContext, EF Core Migration'ları, Seed Verileri
-│   ├── StockWise.Business/     # İş Mantığı (Services), Filtreleme ve Doğrulama
-│   └── StockWise.API/          # RESTful Controller'lar, Swagger, Program.cs
-│
+│   ├── StockWise.API/
+│   ├── StockWise.Business/
+│   ├── StockWise.Core/
+│   ├── StockWise.Data/
+│   └── Dockerfile
 └── frontend/
-    ├── src/
-    │   ├── components/         # Navbar, DashboardStats, ProductTable, Modallar
-    │   ├── services/           # api.js, productService.js, categoryService.js
-    │   ├── App.jsx             # Ana Uygulama ve Durum Yönetimi (State)
-    │   └── main.jsx
+    └── src/
+        ├── components/
+        ├── services/
+        ├── App.jsx
+        └── main.jsx
 ```
+
+## Gereksinimler
+
+- .NET 10 SDK
+- Node.js ve npm
+- Microsoft SQL Server
+- Docker Desktop (Docker ile çalıştırmak için)
+
+## Yerel Ortamda Çalıştırma
+
+### 1. Depoyu klonlama
+
+```bash
+git clone https://github.com/batuhanaydin1/StockWise.git
+cd StockWise
+```
+
+### 2. Backend ve veritabanı
+
+Backend'in veritabanı bağlantı ayarlarını kendi SQL Server ortamınıza göre yapılandırın. Bağlantı bilgilerini paylaşılabilir kaynak koduna veya herkese açık depoya gizli parola olarak eklemeyin.
+
+Backend'i başlatmak için:
+
+```bash
+cd backend/StockWise.API
+dotnet run
+```
+
+Uygulamanın adresi, yerel yapılandırmanıza bağlı olarak değişebilir.
+
+### 3. Frontend
+
+Yeni bir terminal açın ve proje kök dizininden aşağıdaki komutları çalıştırın:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Vite tarafından gösterilen yerel adresi tarayıcınızda açın. Varsayılan adres genellikle `http://localhost:5173` olur.
+
+Frontend'in API adresini gerektiğinde `frontend/src/services/api.js` dosyasından veya `VITE_API_URL` ortam değişkeninden yapılandırabilirsiniz.
+
+## Docker ile Backend'i Çalıştırma
+
+Proje kök dizininden backend klasörüne geçin:
+
+```bash
+cd backend
+docker build -t stockwise-api .
+```
+
+Ardından konteyneri, kendi veritabanı bağlantı ayarınızı güvenli biçimde sağlayarak çalıştırın. Örneğin, yerel geliştirme ortamında kullanılan bağlantı değişkeni `ConnectionStrings__DefaultConnection` şeklindedir.
+
+Docker konteynerinin `8080` portunu bilgisayarınızdaki `8081` portuna eşlediğinizde API'ye şu adresten erişebilirsiniz:
+
+- API: `http://localhost:8081`
+- Swagger: `http://localhost:8081/swagger`
+
+Bu adresler yerel geliştirme ortamı içindir. İnternette yayınlamak için ayrı sunucu, veritabanı ve ortam yapılandırması gerekir.
+
+## Ekran Görüntüleri
+
+Uygulamanın güncel ekran görüntüleri bu bölüme eklenecektir.
+
+## Geliştirme Hedefleri
+
+- Uygulamayı internette yayınlamak.
+- Canlı ortam için güvenli veritabanı yapılandırması oluşturmak.
+- Otomatik test kapsamını geliştirmek.
+- Yeni stok yönetimi özellikleri eklemek.
+
+## Proje Bağlantısı
+
+GitHub: https://github.com/batuhanaydin1/StockWise
 
 ---
 
-## 💻 Nasıl Çalıştırılır?
-
-### 1. Gereksinimler
-- [.NET SDK](https://dotnet.microsoft.com/)
-- [Node.js](https://nodejs.org/)
-- [Microsoft SQL Server](https://www.microsoft.com/sql-server/) (veya SQL Server Express / LocalDB)
-
-### 2. Backend'i Başlatma
-1. `backend/StockWise.API` klasörüne gidin veya `backend` klasöründe terminal açın:
-   ```bash
-   cd backend/StockWise.API
-   dotnet run
-   ```
-2. API varsayılan olarak `http://localhost:5013` adresinde çalışacaktır.
-3. Swagger test arayüzüne `http://localhost:5013/swagger` adresinden ulaşabilirsiniz.
-
-### 3. Frontend'i Başlatma
-1. `frontend` klasöründe yeni bir terminal açın:
-   ```bash
-   cd frontend
-   npm run dev
-   ```
-2. Tarayıcınızda `http://localhost:5173` adresine giderek uygulamayı kullanmaya başlayabilirsiniz!
+Bu proje, modern frontend ve backend teknolojileriyle stok ve son kullanma tarihi takibini bir araya getirmek amacıyla geliştirilmiştir.
