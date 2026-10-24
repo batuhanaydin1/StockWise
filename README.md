@@ -48,13 +48,16 @@ StockWise/
 │   ├── StockWise.Business/
 │   ├── StockWise.Core/
 │   ├── StockWise.Data/
+│   ├── StockWise.slnx
 │   └── Dockerfile
 └── frontend/
-    └── src/
-        ├── components/
-        ├── services/
-        ├── App.jsx
-        └── main.jsx
+    ├── src/
+    │   ├── components/
+    │   ├── services/
+    │   ├── App.jsx
+    │   └── main.jsx
+    ├── package.json
+    └── vite.config.js
 ```
 
 ## Gereksinimler
@@ -75,20 +78,33 @@ cd StockWise
 
 ### 2. Backend ve veritabanı
 
-Backend'in veritabanı bağlantı ayarlarını kendi SQL Server ortamınıza göre yapılandırın. Bağlantı bilgilerini paylaşılabilir kaynak koduna veya herkese açık depoya gizli parola olarak eklemeyin.
+Microsoft SQL Server'ın kurulu ve çalışır durumda olduğundan emin olun. `backend/StockWise.API/appsettings.json` dosyasındaki `DefaultConnection` bağlantı ayarını kendi SQL Server ortamınıza göre yapılandırın.
 
-Backend'i başlatmak için:
+Backend'i başlatmak için proje kök dizininden şu komutları çalıştırın:
 
 ```bash
 cd backend/StockWise.API
 dotnet run
 ```
 
-Uygulamanın adresi, yerel yapılandırmanıza bağlı olarak değişebilir.
+Yerel geliştirme yapılandırmasında API şu adreslerde kullanılabilir:
+
+- HTTP: `http://localhost:5013`
+- HTTPS: `https://localhost:7154`
+
+HTTPS adresini kullanırken yerel geliştirme sertifikasının yapılandırılmış olması gerekir.
+
+Backend'i derlemek için `backend` klasöründe şu komutu kullanabilirsiniz:
+
+```bash
+dotnet build StockWise.slnx
+```
+
+**Not:** Veritabanı bağlantı ayarlarını kendi ortamınıza göre düzenleyin. Gerçek parolaları veya diğer gizli bilgileri herkese açık GitHub deposuna eklemeyin.
 
 ### 3. Frontend
 
-Yeni bir terminal açın ve proje kök dizininden aşağıdaki komutları çalıştırın:
+Yeni bir terminal açın ve proje kök dizininden şu komutları çalıştırın:
 
 ```bash
 cd frontend
@@ -109,18 +125,18 @@ cd backend
 docker build -t stockwise-api .
 ```
 
-Ardından konteyneri, kendi veritabanı bağlantı ayarınızı güvenli biçimde sağlayarak çalıştırın. Örneğin, yerel geliştirme ortamında kullanılan bağlantı değişkeni `ConnectionStrings__DefaultConnection` şeklindedir.
+Ardından konteyneri, kendi veritabanı bağlantı ayarınızı güvenli biçimde sağlayarak çalıştırın. Örneğin, bağlantı değişkeni `ConnectionStrings__DefaultConnection` şeklindedir.
 
-Docker konteynerinin `8080` portunu bilgisayarınızdaki `8081` portuna eşlediğinizde API'ye şu adresten erişebilirsiniz:
+Docker konteynerinin `8080` portunu bilgisayarınızdaki `8081` portuna eşlediğinizde API'ye şu adreslerden erişebilirsiniz:
 
 - API: `http://localhost:8081`
 - Swagger: `http://localhost:8081/swagger`
 
-Bu adresler yerel geliştirme ortamı içindir. İnternette yayınlamak için ayrı sunucu, veritabanı ve ortam yapılandırması gerekir.
+Bu adresler yerel geliştirme ortamı içindir. İnternette yayınlamak için ayrıca sunucu, veritabanı ve ortam yapılandırması gerekir.
 
 ## Ekran Görüntüleri
 
-Uygulamanın güncel ekran görüntüleri bu bölüme eklenecektir.
+Uygulamanın ekran görüntüleri bu bölüme eklenecektir.
 
 ## Geliştirme Hedefleri
 
