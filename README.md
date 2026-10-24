@@ -1,42 +1,37 @@
-# StockWise — Stok ve Son Kullanma Tarihi Takip Sistemi
+# StockWise
 
-StockWise; ürün envanterini, stok seviyelerini ve son kullanma tarihlerini takip etmek için geliştirilmiş bir Full Stack web uygulamasıdır. Kullanıcıların ürünlerini ve kategorilerini yönetmesine, kritik stok seviyelerini izlemesine ve son kullanma tarihi yaklaşan ürünleri kolayca belirlemesine yardımcı olur.
+StockWise, ürün stoklarını ve son kullanma tarihlerini takip etmek için geliştirilmiş bir stok yönetimi uygulamasıdır.
 
 ## Özellikler
 
-- **Kontrol Paneli:** Toplam ürün, kritik stok, son kullanma tarihi yaklaşan ve tarihi geçmiş ürünlere ilişkin özet bilgiler.
-- **Son Kullanma Tarihi Takibi:** Tarihi geçmiş, tarihi yaklaşan ve güvenli durumdaki ürünleri görsel durum göstergeleriyle takip etme.
-- **Kritik Stok Uyarıları:** Minimum stok seviyesinin altına düşen ürünleri belirleme.
-- **Ürün Yönetimi (CRUD):** Ürün ekleme, listeleme, düzenleme ve silme.
-- **Kategori Yönetimi:** Ürünleri kategorilere göre düzenleme ve filtreleme.
-- **Arama ve Sıralama:** Ürün adına göre arama, kategoriye göre filtreleme ve farklı ölçütlerle sıralama.
-- **Veri Doğrulama:** Hatalı veya geçersiz verilerin kaydedilmesini önlemeye yönelik kontroller.
-- **REST API:** Frontend ile backend arasında HTTP üzerinden veri iletişimi.
-- **Swagger / OpenAPI:** API uç noktalarını görüntüleme ve test etme.
-- **Docker Desteği:** Backend uygulamasını Docker konteynerinde çalıştırma.
+- Ürün ekleme, listeleme, güncelleme ve silme
+- Kategori yönetimi
+- Stok miktarlarını takip etme
+- Düşük stok uyarıları
+- Son kullanma tarihi yaklaşan ürünleri görüntüleme
+- Son kullanma tarihi geçmiş ürünleri görüntüleme
+- Ürün arama, filtreleme ve sıralama
+- Özet bilgileri içeren kontrol paneli
 
 ## Kullanılan Teknolojiler
 
 ### Frontend
 - React
 - Vite
-- Tailwind CSS
-- Axios
-- Lucide React
+- JavaScript
+- CSS
 
 ### Backend
 - C#
-- .NET 10
 - ASP.NET Core Web API
 - Entity Framework Core
-- Microsoft SQL Server
-- Swagger / OpenAPI
 
-### Mimari ve Araçlar
-- Çok katmanlı mimari (API, Business, Data, Core)
-- Servis katmanı ve Dependency Injection
-- DTO (Data Transfer Object)
-- Git ve GitHub
+### Veritabanı
+- Microsoft SQL Server
+
+### Diğer Araçlar
+- Git
+- GitHub
 - Docker
 
 ## Proje Yapısı
@@ -50,6 +45,8 @@ StockWise/
 │   ├── StockWise.Data/
 │   ├── StockWise.slnx
 │   └── Dockerfile
+├── docs/
+│   └── stockwise-dashboard.png
 └── frontend/
     ├── src/
     │   ├── components/
@@ -62,49 +59,42 @@ StockWise/
 
 ## Gereksinimler
 
-- .NET 10 SDK
+Projeyi bilgisayarında çalıştırmak için aşağıdaki araçların kurulu olması gerekir:
+
 - Node.js ve npm
+- .NET SDK
 - Microsoft SQL Server
-- Docker Desktop (Docker ile çalıştırmak için)
+- Git
 
-## Yerel Ortamda Çalıştırma
+## Kurulum
 
-### 1. Depoyu klonlama
+### 1. Projeyi Klonlama
 
 ```bash
 git clone https://github.com/batuhanaydin1/StockWise.git
 cd StockWise
 ```
 
-### 2. Backend ve veritabanı
+### 2. Veritabanı Bağlantısı
 
-Microsoft SQL Server'ın kurulu ve çalışır durumda olduğundan emin olun. `backend/StockWise.API/appsettings.json` dosyasındaki `DefaultConnection` bağlantı ayarını kendi SQL Server ortamınıza göre yapılandırın.
+`backend/StockWise.API/appsettings.json` dosyasındaki `DefaultConnection` bağlantı ayarını kendi SQL Server ortamına göre düzenle.
 
-Backend'i başlatmak için proje kök dizininden şu komutları çalıştırın:
+### 3. Backend'i Çalıştırma
 
-```bash
-cd backend/StockWise.API
-dotnet run
-```
-
-Yerel geliştirme yapılandırmasında API şu adreslerde kullanılabilir:
-
-- HTTP: `http://localhost:5013`
-- HTTPS: `https://localhost:7154`
-
-HTTPS adresini kullanırken yerel geliştirme sertifikasının yapılandırılmış olması gerekir.
-
-Backend'i derlemek için `backend` klasöründe şu komutu kullanabilirsiniz:
+Terminalde proje klasörünün kök dizinindeyken:
 
 ```bash
+cd backend
+dotnet restore StockWise.slnx
 dotnet build StockWise.slnx
+dotnet run --project StockWise.API/StockWise.API.csproj
 ```
 
-**Not:** Veritabanı bağlantı ayarlarını kendi ortamınıza göre düzenleyin. Gerçek parolaları veya diğer gizli bilgileri herkese açık GitHub deposuna eklemeyin.
+Backend, yapılandırmaya göre `http://localhost:5013` veya `https://localhost:7154` adresinde çalışır.
 
-### 3. Frontend
+### 4. Frontend'i Çalıştırma
 
-Yeni bir terminal açın ve proje kök dizininden şu komutları çalıştırın:
+Yeni bir terminal aç:
 
 ```bash
 cd frontend
@@ -112,43 +102,33 @@ npm install
 npm run dev
 ```
 
-Vite tarafından gösterilen yerel adresi tarayıcınızda açın. Varsayılan adres genellikle `http://localhost:5173` olur.
+Frontend genellikle `http://localhost:5173` adresinde açılır.
 
-Frontend'in API adresini gerektiğinde `frontend/src/services/api.js` dosyasından veya `VITE_API_URL` ortam değişkeninden yapılandırabilirsiniz.
+API adresi, `frontend/src/services/api.js` dosyasındaki varsayılan ayardan veya `VITE_API_URL` ortam değişkeninden yapılandırılabilir.
 
-## Docker ile Backend'i Çalıştırma
+## Docker
 
-Proje kök dizininden backend klasörüne geçin:
+Backend için Dockerfile, `backend` klasöründe bulunur.
+
+Projenin kök dizininden:
 
 ```bash
 cd backend
 docker build -t stockwise-api .
 ```
 
-Ardından konteyneri, kendi veritabanı bağlantı ayarınızı güvenli biçimde sağlayarak çalıştırın. Örneğin, bağlantı değişkeni `ConnectionStrings__DefaultConnection` şeklindedir.
-
-Docker konteynerinin `8080` portunu bilgisayarınızdaki `8081` portuna eşlediğinizde API'ye şu adreslerden erişebilirsiniz:
-
-- API: `http://localhost:8081`
-- Swagger: `http://localhost:8081/swagger`
-
-Bu adresler yerel geliştirme ortamı içindir. İnternette yayınlamak için ayrıca sunucu, veritabanı ve ortam yapılandırması gerekir.
+Bu komut backend için Docker imajını oluşturur. Konteyneri çalıştırırken veritabanı bağlantısını ve gerekli ortam değişkenlerini kendi ortamına göre yapılandırmalısın.
 
 ## Ekran Görüntüleri
 
-Uygulamanın ekran görüntüleri bu bölüme eklenecektir.
+### Kontrol Paneli
 
-## Geliştirme Hedefleri
+![StockWise Kontrol Paneli](docs/stockwise-dashboard.png)
 
-- Uygulamayı internette yayınlamak.
-- Canlı ortam için güvenli veritabanı yapılandırması oluşturmak.
-- Otomatik test kapsamını geliştirmek.
-- Yeni stok yönetimi özellikleri eklemek.
+## Geliştirme Amaçları
 
-## Proje Bağlantısı
+Bu proje; React ile kullanıcı arayüzü geliştirme, ASP.NET Core Web API ile backend oluşturma, Entity Framework Core kullanımı, SQL Server entegrasyonu ve Git ile sürüm kontrolü konularında pratik yapmak amacıyla geliştirilmiştir.
 
-GitHub: https://github.com/batuhanaydin1/StockWise
+## GitHub
 
----
-
-Bu proje, modern frontend ve backend teknolojileriyle stok ve son kullanma tarihi takibini bir araya getirmek amacıyla geliştirilmiştir.
+Proje deposu: [StockWise](https://github.com/batuhanaydin1/StockWise)
