@@ -1,3 +1,4 @@
+
 using Microsoft.EntityFrameworkCore;
 using StockWise.Business.Services;
 using StockWise.Core.Interfaces;
@@ -6,67 +7,73 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Veritabanı Bağlantısı (SQL Server & EF Core)
+// 1. Veritabanı bağlantısı
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 2. Dependency Injection - Servis Kayıtları
+// 2. Servis kayıtları
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
-// 2. Controller ve JSON Döngüsel Referans Ayarları
+// 3. Controller ve JSON ayarları
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
-        // Entity'ler arası ilişkilerde sonsuz JSON döngüsünü engeller
-        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        options.JsonSerializerOptions.ReferenceHandler =
+            ReferenceHandler.IgnoreCycles;
+
+        options.JsonSerializerOptions.DefaultIgnoreCondition =
+            JsonIgnoreCondition.WhenWritingNull;
     });
 
-// 3. CORS Ayarı (React Frontend'in API'ye erişebilmesi için şarttır)
+// 4. CORS ayarları
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:3000") // Vite ve React varsayılan portları
+        policy.WithOrigins(
+                "http://localhost:5173",
+                "http://localhost:3000")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
 
-// 4. Swagger / OpenAPI Desteği (API'leri tarayıcıdan test etmek için)
+// 5. Swagger / OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// HTTP İstek Hattı (Pipeline)
-if (app.Environment.IsDevelopment())
+// 6. Swagger
+// Yerel geliştirme ve Docker testleri için kullanılabilir.
+// Canlıya alırken erişimini sınırlandır.
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "StockWise API v1");
-    });
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "StockWise API v1");
+});
 
-// CORS'u en başta aktif ediyoruz (Tarayıcı engellerini önlemek için)
+// 7. CORS
 app.UseCors("AllowReactApp");
 
-// Geliştirme ortamında gereksiz HTTPS yönlendirme hatalarını önleyelim
+// 8. HTTPS yönlendirmesi
 if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
 }
 
+// 9. Yetkilendirme ve Controller'lar
 app.UseAuthorization();
-
 app.MapControllers();
 
-// Başlangıç test ürünlerini ekle (Seed Data)
+// 10. Başlangıç verileri
 using (var scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    var context = scope.ServiceProvider
+        .GetRequiredService<AppDbContext>();
+
     await StockWise.Data.DbInitializer.SeedAsync(context);
 }
 

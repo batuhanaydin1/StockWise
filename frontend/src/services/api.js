@@ -1,7 +1,8 @@
+
 import axios from 'axios';
 
-// ASP.NET Core Web API portumuz (launchSettings.json'daki http portu 5013)
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5013/api';
+// Docker üzerinde çalışan ASP.NET Core Web API adresi
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8081/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -10,7 +11,7 @@ const api = axios.create({
   },
 });
 
-// Genel hata yakalayıcı (Interceptor)
+// Genel hata yakalayıcı
 api.interceptors.response.use(
   (response) => response,
   (error) => {
